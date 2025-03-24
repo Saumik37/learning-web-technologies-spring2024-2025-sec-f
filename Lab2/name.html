@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>JS Example</title>
+</head>
+<body>
+    <h3 id="head">Name</h3>
+    <input type="text" id="name" name="name" value="" onblur="validateName()" /> <br><br>
+    <input type="button" id="button" name="button" value="Submit" onclick="validateName()"/>
+    <p id="error"></p>
+
+    <script>
+        function change(){
+            document.getElementById('head').innerHTML = "TEST";
+        }
+
+        function validateName(){
+            let nameInput = document.getElementById('name').value.trim();
+            let error = document.getElementById('error');
+
+            let regex = /^[a-zA-Z][a-zA-Z.\-]*\s+[a-zA-Z.\-]+$/;
+
+            if(nameInput === ""){
+                console.log("Error: Name cannot be empty.");
+                error.innerHTML = "Please type a name!";
+                error.style.color = 'red';
+                document.getElementById('head').innerHTML = "";
+                return false;
+            } 
+            if (!regex.test(nameInput)) {
+                console.log("Error: Invalid name format! Must contain at least two words and start with a letter.");
+                error.innerHTML = "Invalid name format!";
+                error.style.color = 'red';
+                document.getElementById('head').innerHTML = "";
+                return false;
+            }
+
+            console.log("Success: Valid Name!");
+            error.innerHTML = "";
+            document.getElementById('head').innerHTML = nameInput;
+            return true;
+        }
+    </script>
+</body>
+</html>
