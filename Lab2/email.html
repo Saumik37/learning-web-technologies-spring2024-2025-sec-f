@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Email Validation</title>
+    <style>
+        .hint 
+        {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            background-color: blue;
+            color: white;
+            text-align: center;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+
+        .tooltip 
+        {
+            display: none;
+            position: absolute;
+            background-color: white;
+            color: red;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 12px;
+            border: 1px solid red;
+            width: 200px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h3 id="head">Email</h3>
+    
+    <input type="text" id="email" name="email" value="" onblur="validateEmail()" /> 
+    <span class="hint" onclick="toggleTooltip()">i</span>
+    <div id="tooltip" class="tooltip">example@gmail.com</div>
+
+    <br><br>
+    <input type="button" id="button" name="button" value="Submit" onclick="validateEmail()"/>
+    <p id="error"></p>
+
+    <script>
+        function toggleTooltip() 
+        {
+            let tooltip = document.getElementById("tooltip");
+            tooltip.style.display = (tooltip.style.display === "block") ? "none" : "block";
+        }
+
+        function validateEmail() 
+        {
+            let email = document.getElementById('email').value.trim();
+            let error = document.getElementById('error');
+
+            if (email === "") 
+            {
+                console.log("Error: Email cannot be empty.");
+                error.innerHTML = "Please enter an email!";
+                error.style.color = 'red';
+                document.getElementById('head').innerHTML = "";
+                return false;
+            }
+
+            let atIndex = -1;
+            let dotIndex = -1;
+
+            for (let i = 0; i < email.length; i++) 
+            {
+                if (email[i] === "@") {
+                    atIndex = i;
+                }
+                if (email[i] === ".") {
+                    dotIndex = i;
+                }
+            }
+
+            if (atIndex === -1 || dotIndex === -1) 
+            {
+                console.log("Error: Email must contain '@' and '.'");
+                error.innerHTML = "Invalid email! '@' and '.' required.";
+                error.style.color = 'red';
+                document.getElementById('head').innerHTML = "";
+                return false;
+            }
+
+            if (atIndex > dotIndex) 
+            {
+                console.log("Error: '@' must be before '.'");
+                error.innerHTML = "Invalid email format!";
+                error.style.color = 'red';
+                document.getElementById('head').innerHTML = "";
+                return false;
+            }
+
+            if (atIndex === 0 || dotIndex === email.length - 1 || dotIndex - atIndex < 2) 
+            {
+                console.log("Error: Invalid structure.");
+                error.innerHTML = "Email must have text before '@' and after '.'";
+                error.style.color = 'red';
+                document.getElementById('head').innerHTML = "";
+                return false;
+            }
+
+            console.log("Success: Valid Email!");
+            error.innerHTML = "";
+            document.getElementById('head').innerHTML = email;
+            return true;
+        }
+    </script>
+</body>
+</html>

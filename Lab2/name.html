@@ -1,38 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>JS Example</title>
+    <title>Name Validation</title>
 </head>
 <body>
     <h3 id="head">Name</h3>
-    <input type="text" id="name" name="name" value="" onblur="validateName()" /> <br><br>
-    <input type="button" id="button" name="button" value="Submit" onclick="validateName()"/>
+    <input type="text" id="name" name="name" onblur="validateName()" /> <br><br>
+    <input type="button" id="button" value="Submit" onclick="validateName()"/>
     <p id="error"></p>
 
     <script>
-        function change(){
-            document.getElementById('head').innerHTML = "TEST";
-        }
-
-        function validateName(){
+        function validateName() 
+        {
             let nameInput = document.getElementById('name').value.trim();
             let error = document.getElementById('error');
 
-            let regex = /^[a-zA-Z][a-zA-Z.\-]*\s+[a-zA-Z.\-]+$/;
-
-            if(nameInput === ""){
+            if (nameInput === "") 
+            {
                 console.log("Error: Name cannot be empty.");
-                error.innerHTML = "Please type a name!";
+                error.innerHTML = "Please enter a name!";
                 error.style.color = 'red';
                 document.getElementById('head').innerHTML = "";
                 return false;
-            } 
-            if (!regex.test(nameInput)) {
-                console.log("Error: Invalid name format! Must contain at least two words and start with a letter.");
-                error.innerHTML = "Invalid name format!";
+            }
+
+            let words = nameInput.split(" ");
+            let validWords = [];
+
+            for (let i = 0; i < words.length; i++) 
+            {
+                if (words[i] !== "") 
+                {
+                    validWords.push(words[i]);
+                }
+            }
+
+            if (validWords.length < 2) 
+            {
+                console.log("Error: Name must contain at least two words.");
+                error.innerHTML = "Name must have at least two words!";
                 error.style.color = 'red';
                 document.getElementById('head').innerHTML = "";
                 return false;
+            }
+
+            for (let i = 0; i < validWords.length; i++) 
+            {
+                let firstChar = validWords[i][0];
+                if (!((firstChar >= 'A' && firstChar <= 'Z') || (firstChar >= 'a' && firstChar <= 'z'))) {
+                    console.log("Error: Each word must start with a letter.");
+                    error.innerHTML = "Each word must start with a letter!";
+                    error.style.color = 'red';
+                    document.getElementById('head').innerHTML = "";
+                    return false;
+                }
             }
 
             console.log("Success: Valid Name!");
